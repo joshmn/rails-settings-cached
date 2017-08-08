@@ -29,18 +29,14 @@ module RailsSettings
         val
       end
 
-      def for(object)
-        if defined? @instance
+      def instance(object = nil)
+        @instance ||= new
+        if object
           return @instance['__models'][object.class.base_class.to_s] if @instance['__models']
         end
-        instance
-      end
-
-      def instance
-        return @instance if defined? @instance
-        @instance = new
         @instance
       end
+      alias instance_for instance
     end
 
     def initialize
@@ -48,11 +44,6 @@ module RailsSettings
       hash = content.empty? ? {} : YAML.load(ERB.new(content).result).to_hash
       hash = hash[Rails.env] || {}
       replace hash
-    end
-
-    def for(object)
-      return self['__models'][object.class.base_class.to_s] if self["__models"] && self['__models'][object.class.base_class.to_s]
-      self
     end
 
   end
