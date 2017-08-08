@@ -111,7 +111,9 @@ module RailsSettings
 
       def default_settings(starting_with = nil)
         return {} unless Default.enabled?
+        return Default.for(@object) if @object && starting_with.nil?
         return Default.instance if starting_with.nil?
+        return Default.instance.for(@object).select { |key, _| key.to_s.start_with?(starting_with) } if @object
         Default.instance.select { |key, _| key.to_s.start_with?(starting_with) }
       end
     end

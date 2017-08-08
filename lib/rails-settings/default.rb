@@ -29,6 +29,13 @@ module RailsSettings
         val
       end
 
+      def for(object)
+        if defined? @instance
+          return @instance['__models'][object.class.base_class.to_s] if @instance['__models']
+        end
+        instance
+      end
+
       def instance
         return @instance if defined? @instance
         @instance = new
@@ -42,5 +49,11 @@ module RailsSettings
       hash = hash[Rails.env] || {}
       replace hash
     end
+
+    def for(object)
+      return self['__models'][object.class.base_class.to_s] if self["__models"] && self['__models'][object.class.base_class.to_s]
+      self
+    end
+
   end
 end
