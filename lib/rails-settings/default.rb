@@ -36,7 +36,7 @@ module RailsSettings
         end
         @instance
       end
-      alias instance_for instance
+      alias_method :instance_for, :instance
     end
 
     def initialize
